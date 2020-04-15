@@ -40,13 +40,15 @@ return [
 You will now find the config file located in /config/employee-config.php
 
 ## Command 
-Employee Command
-1 SET empdata [emp_id] [emp_name] [ip_address] equals to php artisan employee:create [emp_id] [emp_name] [ip_address] =  Insert the employee details to employee table with data emp_id, emp_name, ip_address.
 
-2 GET empdata [ip_address] equals to php artisan employee:get  [ip_address]  
+## Employee Command
+
+1. SET empdata [emp_id] [emp_name] [ip_address] equals to php artisan employee:create [emp_id] [emp_name] [ip_address] =  Insert the employee details to employee table with data emp_id, emp_name, ip_address.
+
+2. GET empdata [ip_address] equals to php artisan employee:get  [ip_address]  
  Get the employee details having the ip_address
 
-3 UNSET empdata [ip_address] equals to php artisan employee:softdelete [ip_address]
+3. UNSET empdata [ip_address] equals to php artisan employee:softdelete [ip_address]
 Soft delete the data  having the passed ip_address
 
 4. SET empwebhistory [ip_address] [url]​ : php artisan empwebhistory:create [ip_address] [url]
@@ -59,7 +61,7 @@ Print out the employee details with his web search history  stored under the var
 Delete all the web search history data mapped with ip_address.
 
 ```
-Sample Command in Laravel - php artisan employee:create 1234 chiragpatel 192.168.2.23
+Sample Command in Laravel - php artisan employee:create 1234 'Chirag Patel' 192.168.2.23
 ````
 
 ## Testing 
