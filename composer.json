@@ -1,0 +1,35 @@
+{
+  "name": "chirag/employee",
+  "description": "This package will allow you to perform the crud operation on employee",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "chirag patel",
+      "email": "chirag.patel0718@gmail.com"
+    }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "^6.5"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^3.8"
+
+  },
+  "autoload": {
+    "psr-4": {
+      "chirag\\Employee\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "chirag\\Employee\\EmployeeBaseServiceProvider"
+      ]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "chirag\\Employee\\Tests\\": "tests/"
+    }
+  }
+}
