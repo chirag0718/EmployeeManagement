@@ -15,7 +15,7 @@ class EmployeeController extends Controller
      */
     public function show($id): EmployeeResource
     {
-        return new EmployeeResource(QuickEmployee::find($id));
+        return new EmployeeResource(QuickEmployee::selectRaw("id, emp_id, epm_name, ip_address")->where('ip_address',$id)->get());
     }
 
     /**

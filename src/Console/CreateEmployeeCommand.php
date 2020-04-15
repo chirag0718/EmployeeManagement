@@ -38,32 +38,32 @@ class CreateEmployeeCommand extends Command
             return;
         }
         $ip_exist = QuickEmployee::getEmpIpaddress($ip_address);
-        if($ip_exist) {
+        if ($ip_exist) {
             $this->info("This ip address is already exist");
             return;
         }
-        if(!is_int($emp_id)) {
+        if (!is_int($emp_id)) {
             $this->info("please pass the numeric value for emp id");
             return;
         }
 
-        // if (!ctype_alpha($emp_name)) {
-        //     $this->info("please pass the alphatical value for emp name");
-        //     return;
-        // }
-        
+        if (!is_string($emp_name)) {
+            $this->info("please pass the string value for emp name");
+            return;
+        }
+
         $headers = [
             'form_params' => [
                 'ip_address' => $ip_address,
                 'emp_id' => $emp_id,
-                'epm_name' => $emp_name
-            ]
+                'epm_name' => $emp_name,
+            ],
         ];
 
         // Passing the form params to post method to create employee
-        $request = new RequestProvider("/employee",$headers);
+        $request = new RequestProvider("/employee", $headers);
         $response = $request->post();
-        $this->line($response);
+        //$this->line($response);
         //dd($response);
     }
 }

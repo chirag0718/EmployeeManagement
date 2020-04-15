@@ -52,7 +52,7 @@ class DeleteEmpWebHistory extends Command
             ],
         ];
         $request = new RequestProvider("/employee-history/" . $ip_address, $headers);
-        $response = $request->delete();
-        dd($response);
+        $request->delete();
+        $this->info("NULL");
     }
 }

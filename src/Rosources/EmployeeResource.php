@@ -15,7 +15,7 @@ class EmployeeResource extends JsonResource
         if(!empty(parent::toArray($request))) {
             return ['employee' =>  parent::toArray($request)];
         }
-        return "NULL";
+        return null;
     }
 }
 

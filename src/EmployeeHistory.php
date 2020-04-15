@@ -16,15 +16,12 @@ class EmployeeHistory extends Model
     protected $guarded = [];
     protected $primaryKey = 'id';
     protected $fillable = ['ip_address', 'urls'];
-    
-//    protected  $casts = [
-//        'urls' => 'array'
-//    ];
+    //public $timestamps = false;
     use SoftDeletes;
     protected $dates = ['deleted_at'];
 
     public static function getWebHistoryIpaddress($ip_address) {
-        return self::find($ip_address);
+        return self::where('ip_address',$ip_address)->first();
     }
 
 }

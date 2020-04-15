@@ -42,7 +42,7 @@ class CreateEmpWebHistory extends Command
 
         $ip_exist = QuickEmployee::getEmpIpaddress($ip_address);
         if(!$ip_exist) {
-            $this->info("Resource not found");
+            $this->info("NULL");
             return;
         }
 
@@ -54,6 +54,6 @@ class CreateEmpWebHistory extends Command
         ];
         $request = new RequestProvider("/employee-history",$headers);
         $response = $request->post();
-        dd($response);
+        //dd($response);
     }
 }
