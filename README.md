@@ -32,6 +32,9 @@ php artisan vendor:publish --tag=employee-config
 ```
 You will now find the config file located in /config/employee-config.php
 
+## Testing 
+PHPunit testing is place using testbench, you can use TestCase.php for reference.
+
 ## Built With
 
 * [Laravel Framework](https://github.com/laravel/laravel) - The laravel web framework used
