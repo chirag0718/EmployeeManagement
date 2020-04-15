@@ -15,7 +15,7 @@ Give examples
 ```
 
 ### Installing
-
+```
 {
     "require": {
         "chirag/employee": "dev-master"
@@ -27,7 +27,7 @@ Give examples
         }
     ]
 }
-
+```
 ## Migrate Database
 
 Now we have installed the package successfully. Now we need to migrate some of tables for employee package. In the command line, run following command.
