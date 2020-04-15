@@ -18,67 +18,36 @@ Give examples
 
 {
     "require": {
-        "vicgonvt/press": "dev-master"
+        "chirag/employee": "dev-master"
     },
     "repositories": [
         {
             "type": "git",
-            "url": "https://github.com/vicgonvt/press.git"
+            "url": "https://github.com/chirag0718/EmployeeManagement.git"
         }
     ]
 }
 
-## Running the tests
+## Migrate Database
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
+Now we have installed the package successfully. Now we need to migrate some of tables for employee package. In the command line, run following command.
 ```
-Give an example
+php artisan migrate
 ```
 
-### And coding style tests
+### Publish the package config
 
-Explain what these tests test and why
+Next, we need to publish the employee config file to apply some of custom setting to run commnad to manage employee.
 
 ```
-Give an example
+php artisan vendor:publish --tag=employee-config
 ```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+You will now find the config file located in /config/employee-config.php
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+* [Laravel Framework](https://github.com/laravel/laravel) - The laravel web framework used
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
-
+* **Chirag Patel** - [ChiragPatel](hhttps://github.com/chirag0718)
