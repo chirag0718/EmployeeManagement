@@ -19,7 +19,7 @@ class QuickEmployee extends Model
     protected $fillable = ['emp_id', 'epm_name', 'ip_address'];
     public $incrementing = false;
     protected $dates = ['deleted_at'];
-    public $timestamps = false;
+    //public $timestamps = false;
 
 
     public static function getEmpIpaddress($ip_address) {
