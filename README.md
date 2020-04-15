@@ -1,4 +1,4 @@
-# People 10 Employee Management
+# Employee Management
 
 This project display the employee details and employee web history using running several command.
 
