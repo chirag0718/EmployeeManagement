@@ -3,11 +3,12 @@
 namespace chirag\Employee\Tests;
 
 use chirag\Employee\QuickEmployee;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 
 class SavePostsTest extends Testcase
 {
-    //use RefreshDatabase;
+    use RefreshDatabase;
 
     /** @test */
     public function saveEmployeeData()

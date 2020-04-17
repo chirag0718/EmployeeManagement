@@ -1,9 +1,10 @@
 <?php
+
 namespace chirag\Employee\Console;
 
 use chirag\Employee\GeneralHelper;
 use chirag\Employee\Provider\RequestProvider;
-use chirag\Employee\QuickEmployee;
+use chirag\Employee\Repositories\EmployeeRepository;
 use Illuminate\Console\Command;
 
 class CreateEmpWebHistory extends Command
@@ -25,8 +26,9 @@ class CreateEmpWebHistory extends Command
      * Execute the console command.
      * @return mixed
      */
-    public function handle()
+    public function handle(EmployeeRepository $employeeRepository)
     {
+        // Checking the inputs and their correct values
         $ip_address = trim($this->argument('ip_address'));
         $url = $this->argument('url');
         $senetizedIp = GeneralHelper::ipAddressSenetize($ip_address);
@@ -39,21 +41,23 @@ class CreateEmpWebHistory extends Command
             $this->info($senetizedUrl);
             return;
         }
-
-        $ip_exist = QuickEmployee::getEmpIpaddress($ip_address);
-        if(!$ip_exist) {
+        $ip_exist = $employeeRepository->findByIpaddress($ip_address);
+        if (!$ip_exist) {
             $this->info("NULL");
             return;
         }
 
+        // Passing the header information
         $headers = [
             'form_params' => [
                 'urls' => $url,
                 'ip_address' => $ip_address
             ]
         ];
-        $request = new RequestProvider("/employee-history",$headers);
-        $response = $request->post();
-        //dd($response);
+
+        // Creating employee web history records
+        $request = new RequestProvider("/employee-history", $headers);
+        $request->post();
+
     }
 }

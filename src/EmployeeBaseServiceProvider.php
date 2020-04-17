@@ -1,16 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Neha
- * Date: 3/20/2020
- * Time: 5:58 PM
- */
+
 
 namespace chirag\Employee;
 
+use chirag\Employee\Repositories\EmployeeRepositoryInterface;
+use chirag\Employee\Repositories\EmployeeRepository;
+use chirag\Employee\Repositories\EmpWebHistoryRepository;
+use chirag\Employee\Repositories\EmpWebHistoryRepositoryInterface;
 use Illuminate\Http\Resources\Json\Resource;
 use \Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+
 class EmployeeBaseServiceProvider extends ServiceProvider
 {
 
@@ -21,6 +21,7 @@ class EmployeeBaseServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // Passing the all commands
         $this->commands([
             Console\CreateEmployeeCommand::class,
             Console\GetEmployeeCommand::class,
@@ -29,6 +30,18 @@ class EmployeeBaseServiceProvider extends ServiceProvider
             Console\GetEmpWebHistory::class,
             Console\DeleteEmpWebHistory::class,
         ]);
+
+        // Binding the employee reepositry
+        $this->app->bind(
+            EmployeeRepositoryInterface::class,
+            EmployeeRepository::class
+        );
+
+        // Binding the employeewebhistory repository
+        $this->app->bind(
+            EmpWebHistoryRepositoryInterface::class,
+            EmpWebHistoryRepository::class
+        );
     }
 
     /**
@@ -49,7 +62,7 @@ class EmployeeBaseServiceProvider extends ServiceProvider
      */
     private function registerResources()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
     }
 
@@ -61,7 +74,7 @@ class EmployeeBaseServiceProvider extends ServiceProvider
     protected function registerRoutes()
     {
         Route::group($this->routeConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__.'/routes/api.php');
+            $this->loadRoutesFrom(__DIR__ . '/routes/api.php');
         });
     }
 
@@ -80,7 +93,8 @@ class EmployeeBaseServiceProvider extends ServiceProvider
         ];
     }
 
-    protected function registerPublishing() {
+    protected function registerPublishing()
+    {
         $this->publishes([
             __DIR__ . '/../config/employee-config.php' => config_path('employeeconfig.php'),
         ], 'employee-config');

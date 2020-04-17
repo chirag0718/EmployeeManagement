@@ -1,16 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Neha
- * Date: 4/14/2020
- * Time: 1:31 PM
- */
 
 namespace chirag\Employee\Console;
 
 use chirag\Employee\GeneralHelper;
 use chirag\Employee\Provider\RequestProvider;
-use chirag\Employee\QuickEmployee;
+use chirag\Employee\Repositories\EmpWebHistoryRepository;
 use Illuminate\Console\Command;
 
 class GetEmpWebHistory extends Command
@@ -32,8 +26,9 @@ class GetEmpWebHistory extends Command
      * Execute the console command.
      * @return mixed
      */
-    public function handle()
+    public function handle(EmpWebHistoryRepository $empWebHistoryRepository)
     {
+        // Checking the inputs and their correct values
         $ip_address = $this->argument('ip_address');
         $senetizedIp = GeneralHelper::ipAddressSenetize($ip_address);
         if ($senetizedIp) {
@@ -41,12 +36,13 @@ class GetEmpWebHistory extends Command
             return;
         }
 
-        $ip_exist = QuickEmployee::getEmpIpaddress($ip_address);
-        if(!$ip_exist) {
+        $ip_exist = $empWebHistoryRepository->findByIpaddress($ip_address);
+        if (!$ip_exist->count()) {
             $this->info("Resource not found");
             return;
         }
-    
+
+        // Passing the header information
         $headers = [
             'headers' => [
                 'Content-Type' => 'application/json',

@@ -66,6 +66,7 @@ Sample Command in Laravel - php artisan employee:create 1234 'Chirag Patel' 192.
 
 ## Testing 
 PHPunit testing is place using testbench, you can use TestCase.php for reference.
+``` ./vendor/bin/phpunit --filter saveEmployeeData```
 
 ## Built With
 

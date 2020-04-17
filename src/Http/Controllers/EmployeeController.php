@@ -2,33 +2,50 @@
 
 namespace chirag\Employee\Http\Controllers;
 
-use chirag\Employee\QuickEmployee;
-use chirag\Employee\Rosources\EmployeeResource;
+use chirag\Employee\Repositories\EmployeeRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class EmployeeController extends Controller
 {
-    /**
-     * @param Employee $quickEmployee
-     * @return EmployeeResource
-     */
-    public function show($id): EmployeeResource
-    {
-        return new EmployeeResource(QuickEmployee::selectRaw("id, emp_id, epm_name, ip_address")->where('ip_address',$id)->get());
-    }
 
     /**
-     * @return EmployeeResource
+     * @var EmployeeRepositoryInterface
      */
-    public function index(): EmployeeResource
-    {
-        return new EmployeeResource(QuickEmployee::paginate());
-    }
+    private $employeeRepository;
 
     /**
+     * EmployeeController constructor.
+     * @param EmployeeRepositoryInterface $employeeRepository
+     */
+    public function __construct(EmployeeRepositoryInterface $employeeRepository)
+    {
+        $this->employeeRepository = $employeeRepository;
+    }
+
+    /** Fetching all employee details
+     * @return mixed
+     */
+    public function index()
+    {
+        $employee = $this->employeeRepository->getAll();
+        return $employee;
+    }
+
+
+    /** Fetching specific employee information.
+     * @param $ip_address
+     * @return mixed
+     */
+    public function show($ip_address)
+    {
+        $employee = $this->employeeRepository->findByIpaddress($ip_address);
+        return $employee;
+    }
+
+    /** Creating new employee
      * @param Request $request
-     * @return EmployeeResource
+     * @return mixed
      */
     public function store(Request $request)
     {
@@ -38,29 +55,18 @@ class EmployeeController extends Controller
             'ip_address' => 'required',
         ]);
 
-        $quickemployee = QuickEmployee::create($request->all());
-        return new EmployeeResource($quickemployee);
+        $employeeData = $request->all();
+        $employee = $this->employeeRepository->create($employeeData);
+        return $employee;
     }
 
-    /**
-     * @param Employee $quickemployee
-     * @param Request $request
-     * @return EmployeeResource
+    /** Deleting the specific employee
+     * @param $ip_address
+     * @return null
      */
-    public function update(QuickEmployee $quickemployee, Request $request): EmployeeResource
+    public function destroy($ip_address)
     {
-        $quickemployee->update($request->all());
-        return new EmployeeResource($quickemployee);
-    }
-
-    /**
-     * @param Employee $quickemployee
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
-     */
-    public function destroy(QuickEmployee $quickemployee, $id)
-    {
-        $quickemployee::find($id)->delete();
-        return new EmployeeResource($quickemployee);
+        $this->employeeRepository->delete($ip_address);
+        return "NULL";
     }
 }

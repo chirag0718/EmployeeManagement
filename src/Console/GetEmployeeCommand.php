@@ -3,7 +3,7 @@
 namespace chirag\Employee\Console;
 
 use chirag\Employee\GeneralHelper;
-use chirag\Employee\QuickEmployee;
+use chirag\Employee\Repositories\EmployeeRepository;
 use Illuminate\Console\Command;
 use chirag\Employee\Provider\RequestProvider;
 
@@ -27,19 +27,22 @@ class GetEmployeeCommand extends Command
      * Execute the console command.
      * @return mixed
      */
-    public function handle() {
+    public function handle(EmployeeRepository $employeeRepository)
+    {
+        // Checking the inputs and their correct values
         $ip_address = $this->argument('ip_address');
         $senetizedIp = GeneralHelper::ipAddressSenetize($ip_address);
         if ($senetizedIp) {
             $this->info($senetizedIp);
             return;
         }
-        $ip_exist = QuickEmployee::getEmpIpaddress($ip_address);
-        if(!$ip_exist) {
+        $ip_exist = $employeeRepository->findByIpaddress($ip_address);
+        if (!$ip_exist) {
             $this->info("Resource not found");
             return;
         }
 
+        // Passing the header information
         $headers = [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -47,7 +50,7 @@ class GetEmployeeCommand extends Command
             ]
         ];
         // This will fetch the employee details
-        $request = new RequestProvider("/employee/" . $ip_address,$headers);
+        $request = new RequestProvider("/employee/" . $ip_address, $headers);
         $response = $request->get();
         dd($response);
     }

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Neha
- * Date: 3/29/2020
- * Time: 3:00 PM
- */
 
 namespace chirag\Employee\Provider;
 
@@ -14,10 +8,18 @@ use GuzzleHttp\Exception\RequestException;
 
 class RequestProvider implements ServiceInterface
 {
+    /**
+     * @var array
+     */
     protected $headers;
     protected $url;
     protected $client;
 
+    /**
+     * RequestProvider constructor.
+     * @param $url
+     * @param array $headers
+     */
     public function __construct($url, $headers = [])
     {
         $this->url = $url;
@@ -38,6 +40,7 @@ class RequestProvider implements ServiceInterface
             return $this->StatusCodeHandling($e);
         }
     }
+
     /**
      * Calling the Post API
      * @return string
@@ -106,7 +109,8 @@ class RequestProvider implements ServiceInterface
      * @param $response
      * @return mixed
      */
-    private function jsonResponse($response) {
-        return  $response->getBody()->getContents();
+    private function jsonResponse($response)
+    {
+        return $response->getBody()->getContents();
     }
 }

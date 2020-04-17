@@ -4,7 +4,7 @@ namespace chirag\Employee\Console;
 
 use chirag\Employee\GeneralHelper;
 use chirag\Employee\Provider\RequestProvider;
-use chirag\Employee\QuickEmployee;
+use chirag\Employee\Repositories\EmployeeRepository;
 use Illuminate\Console\Command;
 
 class CreateEmployeeCommand extends Command
@@ -26,18 +26,18 @@ class CreateEmployeeCommand extends Command
      * Execute the console command.
      * @return mixed
      */
-    public function handle()
+    public function handle(EmployeeRepository $employeeRepository)
     {
-        // Getting the all argument
+        // Checking the inputs and their correct values
         $ip_address = $this->argument('ip_address');
-        $emp_id = (int) $this->argument('emp_id');
+        $emp_id = (int)$this->argument('emp_id');
         $emp_name = $this->argument('epm_name');
         $senetizedIp = GeneralHelper::ipAddressSenetize($ip_address);
         if ($senetizedIp) {
             $this->info($senetizedIp);
             return;
         }
-        $ip_exist = QuickEmployee::getEmpIpaddress($ip_address);
+        $ip_exist = $employeeRepository->findByIpaddress($ip_address);
         if ($ip_exist) {
             $this->info("This ip address is already exist");
             return;
@@ -46,12 +46,12 @@ class CreateEmployeeCommand extends Command
             $this->info("please pass the numeric value for emp id");
             return;
         }
-
-        if (!is_string($emp_name)) {
+        if (!preg_match('/^[a-zA-Z ]*$/', $emp_name)) {
             $this->info("please pass the string value for emp name");
             return;
         }
 
+        // Passing the header information
         $headers = [
             'form_params' => [
                 'ip_address' => $ip_address,
@@ -63,7 +63,5 @@ class CreateEmployeeCommand extends Command
         // Passing the form params to post method to create employee
         $request = new RequestProvider("/employee", $headers);
         $response = $request->post();
-        //$this->line($response);
-        //dd($response);
     }
 }

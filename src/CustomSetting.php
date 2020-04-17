@@ -13,7 +13,11 @@ class CustomSetting
         return config('employeeconfig.api_path', 'api');
     }
 
-    public static function website_url() {
-        return config('employeeconfig.website_url', 'http://localhost'). config('employeeconfig.api_path', '/api');
+    /** Getting the website url from config or passing the default
+     * @return string
+     */
+    public static function website_url()
+    {
+        return config('employeeconfig.website_url', 'http://localhost') . config('employeeconfig.api_path', '/api');
     }
 }

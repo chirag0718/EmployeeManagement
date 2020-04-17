@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Neha
- * Date: 4/13/2020
- * Time: 9:08 PM
- */
+
 
 namespace chirag\Employee\Rosources;
 use Illuminate\Http\Resources\Json\JsonResource;

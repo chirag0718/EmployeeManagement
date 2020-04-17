@@ -2,38 +2,49 @@
 
 namespace chirag\Employee\Http\Controllers;
 
-use chirag\Employee\EmployeeHistory;
-use chirag\Employee\Rosources\EmployeeHistoryResource;
+use chirag\Employee\Repositories\EmpWebHistoryRepository;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
-use stdClass;
 
 class EmpWebHistoryController extends Controller
 {
+
     /**
-     *
-     * @param $id
-     * @return EmployeeHistoryResource
+     * @var EmpWebHistoryRepository
      */
-    public function show($id): EmployeeHistoryResource
+    private $empWebHistoryRepository;
+
+    /**
+     * EmpWebHistoryController constructor.
+     * @param EmpWebHistoryRepository $empWebHistoryRepository
+     */
+    public function __construct(EmpWebHistoryRepository $empWebHistoryRepository)
     {
-        $empHistoryArray = EmployeeHistory::selectRaw("id, ip_address, GROUP_CONCAT(CONCAT('url:', urls) SEPARATOR ', ') AS urls")->where("ip_address", $id)->groupBy("ip_address")->get();
-        return new EmployeeHistoryResource($empHistoryArray);
+        $this->empWebHistoryRepository = $empWebHistoryRepository;
     }
 
-    /**
-     * @return EmployeeHistoryResource
+    /** Showing the web history for specific ip adddress
+     * @param $ip_address
+     * @return mixed
      */
-    public function index(): EmployeeHistoryResource
+    public function show($ip_address)
     {
-        return new EmployeeHistoryResource(EmployeeHistory::paginate());
+        $employee = $this->empWebHistoryRepository->findByIpaddress($ip_address);
+        return $employee;
     }
 
+    /** Showing the all web histories
+     * @return mixed
+     */
+    public function index()
+    {
+        $employee = $this->empWebHistoryRepository->getAll();
+        return $employee;
+    }
 
-    /**
+    /** Creating new web history
      * @param Request $request
-     * @return EmployeeHistoryResource
+     * @return mixed
      */
     public function store(Request $request)
     {
@@ -41,34 +52,19 @@ class EmpWebHistoryController extends Controller
             'ip_address' => 'required',
             'urls' => 'required',
         ]);
+        $empWebHistoryData = $request->all();
 
-        $employeeHistory = EmployeeHistory::create($request->all());
-        return new EmployeeHistoryResource($employeeHistory);
+        $employee = $this->empWebHistoryRepository->create($empWebHistoryData);
+        return $employee;
     }
 
-    /**
-     * @param Employee History $employeeHistory
-     * @param Request $request
-     * @return EmployeeHistoryResource
+    /** Deleting specific web history
+     * @param $ip_address
+     * @return null
      */
-    // public function update(EmployeeHistory $employeeHistory, Request $request): EmployeeHistoryResource
-    // {
-    //     // $url = $request->get('urls');
-    //     // $employeeHistory->update([
-    //     //     'urls' => DB::raw("CONCAT(urls, 'url:" . $url . ",')")
-    //     // ]);
-    //     //return new EmployeeHistoryResource($employeeHistory);
-    // }
-
-    /**
-     *
-     * @param Employee History $employeeHistory
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
-     */
-    public function destroy($id)
+    public function destroy($ip_address)
     {
-        $employeHistory = EmployeeHistory::where('ip_address',$id);
-        $employeHistory->delete();
+        $this->empWebHistoryRepository->delete($ip_address);
+        return "NULL";
     }
 }

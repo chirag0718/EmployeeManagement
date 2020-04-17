@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Neha
- * Date: 3/29/2020
- * Time: 11:50 AM
- */
 
 namespace chirag\Employee\Console;
 
 use chirag\Employee\GeneralHelper;
-use chirag\Employee\QuickEmployee;
+use chirag\Employee\Repositories\EmployeeRepository;
 use Illuminate\Console\Command;
 use chirag\Employee\Provider\RequestProvider;
 
@@ -34,27 +28,29 @@ class DeleteEmployeeConsole extends Command
      * Execute the console command.
      * @return mixed
      */
-    public function handle()
+    public function handle(EmployeeRepository $employeeRepository)
     {
+        // Checking the inputs and their correct values
         $ip_address = $this->argument('ip_address');
         $senetizedIp = GeneralHelper::ipAddressSenetize($ip_address);
         if ($senetizedIp) {
             $this->info($senetizedIp);
             return;
         }
-        $ip_exist = QuickEmployee::getEmpIpaddress($ip_address);
-        if(!$ip_exist) {
+        $ip_exist = $employeeRepository->findByIpaddress($ip_address);
+        if (!$ip_exist) {
             $this->info("Resource not found");
             return;
         }
 
+        // Passing the header information
         $headers = [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json'
             ]
         ];
-        $request = new RequestProvider("/employee/" . $ip_address,$headers);
+        $request = new RequestProvider("/employee/" . $ip_address, $headers);
         $response = $request->delete();
         dd($response);
     }
